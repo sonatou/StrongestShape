@@ -10,7 +10,7 @@ public class SlowerBehaviour : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerMovement player = other.GetComponent<playerMovement>();
+            PlayerMovement player = other.GetComponent<PlayerMovement>();
             player.DecreaseSpeed(speedDecrease);
             Destroy(gameObject);
         }

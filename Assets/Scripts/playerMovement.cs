@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class playerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    public float rollSpeed = 5.0f;
+    public float rollSpeed = 2.0f;
     public float gridSize = 1.0f;
     private bool isRolling = false;
 
