@@ -1,16 +1,17 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class KillerEnemyBehaviour : MonoBehaviour
 {
-    public Transform[] patrolPoints; // Lista de pontos para patrulha
-    public float patrolSpeed = 2.0f; // Velocidade de patrulha
-    public float waitTimeAtPoint = 1.0f; // Tempo de espera em cada ponto
+    [SerializeField] private Transform[] patrolPoints;
+    [SerializeField] private float patrolSpeed = 2.0f;
+    [SerializeField] private float waitTimeAtPoint = 1.0f;
 
-    private int currentPointIndex = 0; // Índice do ponto atual na patrulha
-    private bool waiting = false; // Controla se o inimigo está esperando
+    private int currentPointIndex = 0;
+    private bool waiting = false;
+
+    [SerializeField] private CameraShake cameraShake;
 
     private void Update()
     {
@@ -21,20 +22,26 @@ public class KillerEnemyBehaviour : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Destroy(other.gameObject);
-            SceneManager.LoadScene(0);
+            StartCoroutine(KillPlayer(other));
         }
+    }
+
+    public IEnumerator KillPlayer(Collider player)
+    {
+        StartCoroutine(cameraShake.Shake(0.3f, 0.3f));
+        player.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.3f);
+        Destroy(player.gameObject);
+        SceneManager.LoadScene(0);
     }
 
     private void Patrol()
     {
         if (patrolPoints.Length == 0 || waiting) return;
 
-        // Move o inimigo em direção ao ponto atual
         Transform targetPoint = patrolPoints[currentPointIndex];
         transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, patrolSpeed * Time.deltaTime);
 
-        // Verifica se chegou ao ponto atual
         if (Vector3.Distance(transform.position, targetPoint.position) < 0.1f)
         {
             StartCoroutine(WaitAtPoint());
@@ -45,10 +52,8 @@ public class KillerEnemyBehaviour : MonoBehaviour
     {
         waiting = true;
 
-        // Aguarda o tempo definido antes de ir para o próximo ponto
         yield return new WaitForSeconds(waitTimeAtPoint);
 
-        // Atualiza para o próximo ponto da patrulha
         currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
 
         waiting = false;
