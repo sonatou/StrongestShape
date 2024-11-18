@@ -13,6 +13,9 @@ public class CollectableBehaviour : MonoBehaviour
         {
             PlayerMovement player = other.GetComponent<PlayerMovement>();
             player.IncreaseSpeed(speedBonus);
+
+            CanvasController.instance.UpdateScore((int)speedBonus);
+
             Destroy(gameObject);
         }
     }
