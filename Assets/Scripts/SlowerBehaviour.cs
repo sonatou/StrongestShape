@@ -20,6 +20,9 @@ public class SlowerBehaviour : MonoBehaviour
     {
         StartCoroutine(shake.Shake(0.3f, 0.2f));
         player.DecreaseSpeed(speedDecrease);
+
+        CanvasController.instance.UpdateScore((int)speedDecrease * -1);
+
         gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);

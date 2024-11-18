@@ -32,7 +32,9 @@ public class KillerEnemyBehaviour : MonoBehaviour
         player.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.3f);
         Destroy(player.gameObject);
-        SceneManager.LoadScene(0);
+        //SceneManager.LoadScene(0);
+
+        CanvasController.instance.PlayerLoss();
     }
 
     private void Patrol()
