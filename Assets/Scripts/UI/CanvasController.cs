@@ -10,9 +10,11 @@ public class CanvasController : MonoBehaviour
     public static CanvasController instance;
 
     [SerializeField] private RectTransform losePanel;
+    [SerializeField] private RectTransform winPanel;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Button restartGame;
     [SerializeField] private Button returnButton;
+    [SerializeField] private GameObject player;
 
     private int playerscore = 0;
 
@@ -28,12 +30,12 @@ public class CanvasController : MonoBehaviour
         returnButton.onClick.AddListener(ReturnMainMenu);
     }
 
-    private void RestartGame()
+    public void RestartGame()
     {
         SceneManager.LoadScene("InGame");
     }
 
-    private void ReturnMainMenu()
+    public void ReturnMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
     }
@@ -42,6 +44,21 @@ public class CanvasController : MonoBehaviour
     {
         playerscore += val;
         scoreText.text = "Score: " + playerscore.ToString();
+        if(playerscore >= 17)
+        {
+            player.SetActive(false);
+            winPanel.gameObject.SetActive(true);
+        }
+    }
+
+    void pauseGame()
+    {
+        Time.timeScale = 0;
+    }
+
+    void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 
     public void PlayerLoss()
