@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class KillerEnemyBehaviour : MonoBehaviour
 {
@@ -8,8 +7,8 @@ public class KillerEnemyBehaviour : MonoBehaviour
     [SerializeField] private float patrolSpeed = 2.0f;
     [SerializeField] private float waitTimeAtPoint = 1.0f;
 
-    private int currentPointIndex = 0;
-    private bool waiting = false;
+    private int _currentPointIndex;
+    private bool _waiting;
 
     [SerializeField] private CameraShake cameraShake;
 
@@ -34,14 +33,14 @@ public class KillerEnemyBehaviour : MonoBehaviour
         Destroy(player.gameObject);
         //SceneManager.LoadScene(0);
 
-        CanvasController.instance.PlayerLoss();
+        CanvasController.Instance.PlayerLoss();
     }
 
     private void Patrol()
     {
-        if (patrolPoints.Length == 0 || waiting) return;
+        if (patrolPoints.Length == 0 || _waiting) return;
 
-        Transform targetPoint = patrolPoints[currentPointIndex];
+        Transform targetPoint = patrolPoints[_currentPointIndex];
         transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, patrolSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, targetPoint.position) < 0.1f)
@@ -52,12 +51,12 @@ public class KillerEnemyBehaviour : MonoBehaviour
 
     private IEnumerator WaitAtPoint()
     {
-        waiting = true;
+        _waiting = true;
 
         yield return new WaitForSeconds(waitTimeAtPoint);
 
-        currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
+        _currentPointIndex = (_currentPointIndex + 1) % patrolPoints.Length;
 
-        waiting = false;
+        _waiting = false;
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,7 +5,7 @@ using UnityEngine.UI;
 
 public class CanvasController : MonoBehaviour
 {
-    public static CanvasController instance;
+    public static CanvasController Instance;
 
     [SerializeField] private RectTransform losePanel;
     [SerializeField] private RectTransform winPanel;
@@ -18,13 +16,13 @@ public class CanvasController : MonoBehaviour
     [SerializeField] private Button returnButton;
     [SerializeField] private GameObject player;
     
-    private float elapsedTime = 0f;
-    private bool isTimerRunning = true;
-    private int playerscore = 0;
+    private float _elapsedTime;
+    private bool _isTimerRunning = true;
+    private float _playerscore;
 
     void Awake()
     {
-        if (instance == null) instance = this;
+        if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
 
@@ -35,13 +33,13 @@ public class CanvasController : MonoBehaviour
     }
     private void Update()
     {
-        if (!isTimerRunning) return;
+        if (!_isTimerRunning) return;
 
-        elapsedTime += Time.deltaTime;
+        _elapsedTime += Time.deltaTime;
 
-        int minutes = Mathf.FloorToInt(elapsedTime / 60f);
-        int seconds = Mathf.FloorToInt(elapsedTime % 60f);
-        int milliseconds = Mathf.FloorToInt((elapsedTime * 1000f) % 1000);
+        int minutes = Mathf.FloorToInt(_elapsedTime / 60f);
+        int seconds = Mathf.FloorToInt(_elapsedTime % 60f);
+        int milliseconds = Mathf.FloorToInt((_elapsedTime * 1000f) % 1000);
 
         timerText.text = $"{minutes:D2}:{seconds:D2}:{milliseconds:D3}";
     }
@@ -58,9 +56,9 @@ public class CanvasController : MonoBehaviour
 
     public void UpdateScore(int val)
     {
-        playerscore += val;
-        scoreText.text = "Score: " + playerscore.ToString();
-        if(playerscore >= 17)
+        _playerscore += val;
+        scoreText.text = "Score: " + _playerscore.ToString();
+        if(_playerscore >= 17)
         {
             player.SetActive(false);
             winText.text = "you win in " + timerText.text + " try blindfolded now";
@@ -68,7 +66,7 @@ public class CanvasController : MonoBehaviour
         }
     }
 
-    void pauseGame()
+    private void PauseGame()
     {
         Time.timeScale = 0;
     }
