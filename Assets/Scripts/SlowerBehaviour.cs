@@ -1,30 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class SlowerBehaviour : MonoBehaviour
-{
-    [SerializeField] private float speedDecrease = 1f;
-    [SerializeField] CameraShake shake;
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            PlayerMovement player = other.GetComponent<PlayerMovement>();
-            StartCoroutine(SlowPlayer(player));
-        }
-    }
-
-    public IEnumerator SlowPlayer(PlayerMovement player)
-    {
-        StartCoroutine(shake.Shake(0.3f, 0.2f));
-        player.DecreaseSpeed(speedDecrease);
-
-        CanvasController.Instance.UpdateScore((int)speedDecrease * -1);
-
-        gameObject.SetActive(false);
-        yield return new WaitForSeconds(0.5f);
-        Destroy(gameObject);
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:64ed286c859bbe1f2f553ca0579a204ecc8bdf189a98efdc8b241378efee5181
+size 929

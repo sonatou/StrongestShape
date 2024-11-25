@@ -1,22 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-
-public class CollectableBehaviour : MonoBehaviour
-{
-    [SerializeField] private float speedBonus = 1f;
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            PlayerMovement player = other.GetComponent<PlayerMovement>();
-            player.IncreaseSpeed(speedBonus);
-
-            CanvasController.Instance.UpdateScore((int)speedBonus);
-
-            Destroy(gameObject);
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ae9d14887e3d8c821c5e7906b585663bb9870bf692023ccef1118ae20758ce19
+size 875
